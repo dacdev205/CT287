@@ -16,4 +16,5 @@ Tệp này cung cấp hướng dẫn và mã nguồn để cập nhật thông t
    - Dùng dấu ":" để phân tách tên vùng và danh sách tỉnh thành.
    - Dùng dấu ",", "-" hoặc "và" để phân tách các tỉnh thành trong danh sách.
 3. Chạy mã nguồn Python để cập nhật thông tin vùng khu vực:
+   ```bash
    python test.py
