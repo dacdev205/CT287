@@ -28,7 +28,7 @@ with open('TayBac.txt', 'r', encoding='utf-16') as f:
 # Tạo danh sách các huyện và tỉnh thuộc khu vực nông thôn và thành thị
 districts_rural = re.findall(r'Huyện\s(.+?)\s\(.+?\)', taybac_data)
 districts_urban = re.findall(r'(Thành phố\s.+?)\s\(.+?\)', taybac_data)
-
+# 
 def check_district_area(district_name, region):
     if pd.isna(district_name) or region != "Tây Bắc Bộ":  # Kiểm tra xem giá trị là NaN hoặc "Vùng" không phải là "Tây Bắc Bộ"
         return None
