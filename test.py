@@ -28,20 +28,19 @@ with open('TayBac.txt', 'r', encoding='utf-16') as f:
 # Tạo danh sách các huyện và tỉnh thuộc khu vực nông thôn và thành thị
 districts_rural = re.findall(r'Huyện\s(.+?)\s\(.+?\)', taybac_data)
 districts_urban = re.findall(r'(Thành phố\s.+?)\s\(.+?\)', taybac_data)
-# 
+
 def check_district_area(district_name, region):
-    if pd.isna(district_name) or region != "Tây Bắc Bộ":  # Kiểm tra xem giá trị là NaN hoặc "Vùng" không phải là "Tây Bắc Bộ"
+    if pd.isna(district_name) or region != "Tây Bắc Bộ":  
         return None
     normalized_name = unidecode(str(district_name)).lower()  # Chuẩn hóa tên huyện
-    # Kiểm tra xem có huyện nào trong danh sách "Khu vực nông thôn" có chứa phần của chuỗi không
-    for rural_district in districts_rural:
-        if unidecode(rural_district.lower()) in normalized_name:
-            return "Nông Thôn"
-    # Kiểm tra xem có huyện nào trong danh sách "Khu vực thành thị" có chứa phần của chuỗi không
-    for urban_district in districts_urban:
-        if unidecode(urban_district.lower()) in normalized_name:
-            return "Thành Thị"
-    return None
+    # Kiểm tra xem tên huyện có trong danh sách "Khu vực nông thôn" hoặc "Khu vực thành thị" không
+    if any(normalized_name in unidecode(district).lower() for district in districts_rural):
+        return "Nông Thôn"
+    if any(normalized_name in unidecode(district).lower() for district in districts_urban):
+        return "Thành Thị"
+    # Nếu không tồn tại trong cả hai danh sách, thì đây là "Nông Thôn"
+    return "Nông Thôn"
+
 
 # Hàm để kiểm tra tên tỉnh và trả về tên vùng tương ứng
 def check_province_name(province_name):
@@ -68,4 +67,4 @@ df["Vùng"] = df["Huyện, Tỉnh"].map(check_province_name)
 df["Khu vực"] = df.apply(lambda row: check_district_area(row["Huyện, Tỉnh"], row["Vùng"]), axis=1)
 
 # Lưu dữ liệu vào tệp Excel mới
-# df.to_excel("updated_Vung-Khuvuc.xlsx", index=False)
+df.to_excel("updated_Vung-Khuvuc.xlsx", index=False)
